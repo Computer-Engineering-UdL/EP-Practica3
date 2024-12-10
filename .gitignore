@@ -1,0 +1,60 @@
+# This gitignore has been extracted from a template by Jonathan Gawrych
+# https://gist.github.com/JonathanGawrych/32afe529fd519a7312df
+# Later on, this gitignore has been modified by Aniol0012 to include more files ignored
+
+### Compiled Files ###
+*.class
+bin/
+build/
+/bin1/
+java/build/**
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Inclusions ###
+!lib/**
+
+### Mac OS ###
+.DS_Store
+
+### Maven ###
+log/
+target/
+
+### Mobile Tools for Java (J2ME) ###
+.mtj.tmp/
+
+### NetBeans ###
+/nbbuild/
+/nbdist/
+/nbproject/private/
+/dist/
+/.nb-gradle/
+
+### Package Files ###
+*.jar
+*.war
+*.ear
+
+### Virtual machine crash logs ###
+hs_err_pid*
+
+### VS Code ###
+.vscode/
