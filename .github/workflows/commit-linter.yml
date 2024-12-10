@@ -1,0 +1,30 @@
+name: Conventional Commits Linter
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  commit-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Commitlint
+        run: |
+          npm install --global @commitlint/cli @commitlint/config-conventional
+
+      - name: Lint last commit message
+        run: |
+          npx commitlint --from=HEAD~1 --to=HEAD --verbose
+        continue-on-error: true
+
+      - name: Warning if commit message does not follow convention
+        if: failure()
+        run: |
+          echo "::warning file=commit-msg::Commit message does not follow conventional commit standards"
