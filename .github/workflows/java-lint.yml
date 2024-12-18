@@ -1,0 +1,38 @@
+name: Java Lint and Build Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.java'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.java'
+
+jobs:
+  build-and-lint:
+    name: Build and Lint Java Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compile Java files
+        run: |
+          mkdir -p out
+          javac -d out $(find src -name "*.java")
+
+      - name: Run Checkstyle
+        run: |
+          curl -LJO https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.2/checkstyle-10.12.2-all.jar
+          java -jar checkstyle-10.12.2-all.jar -c /google_checks.xml $(find src -name "*.java")
