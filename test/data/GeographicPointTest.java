@@ -51,7 +51,8 @@ class GeographicPointTest {
     void testGeographicPointZeroCoordinates() {
         GeographicPoint point = new GeographicPoint(0.0f, 0.0f);
         assertEquals(0.0f, point.getLatitude());
-        assertEquals(0.0f, point.getLongitude());
+        // TODO: This is just a workflow test
+        assertNotEquals(0.0f, point.getLongitude());
     }
 
     @Test
