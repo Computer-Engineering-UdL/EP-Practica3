@@ -1,4 +1,4 @@
-name: Java Lint and Build Workflow
+name: Java Lint, Build and Test Workflow
 
 on:
   push:
@@ -13,8 +13,8 @@ on:
       - '**/*.java'
 
 jobs:
-  build-and-lint:
-    name: Build and Lint Java Project
+  build-lint-test:
+    name: Build, Lint, and Test Java Project
     runs-on: ubuntu-latest
 
     steps:
@@ -36,3 +36,8 @@ jobs:
         run: |
           curl -LJO https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.2/checkstyle-10.12.2-all.jar
           java -jar checkstyle-10.12.2-all.jar -c /google_checks.xml $(find src -name "*.java")
+
+      - name: Run JUnit tests
+        run: |
+          curl -LJO https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.2/junit-platform-console-standalone-1.9.2.jar
+          java -jar junit-platform-console-standalone-1.9.2.jar --class-path out --scan-class-path
