@@ -3,7 +3,8 @@ package data;
 import org.junit.jupiter.api.Test;
 import utils.NumberUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class GeographicPointTest {
     @Test

@@ -1,11 +1,11 @@
 package micromobility;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import data.GeographicPoint;
 import data.UserAccount;
 import data.VehicleID;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class JourneyService {
     private final UserAccount userAccount;
