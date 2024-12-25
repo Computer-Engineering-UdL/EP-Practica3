@@ -39,5 +39,5 @@ jobs:
 
       - name: Run JUnit tests
         run: |
-          curl -LJO https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.2/junit-platform-console-standalone-1.9.2.jar
-          java -jar junit-platform-console-standalone-1.9.2.jar --class-path out --scan-class-path
+          curl -LJO https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.1/junit-platform-console-standalone-1.8.1.jar
+          java -jar junit-platform-console-standalone-1.8.1.jar --class-path "out/test:out/production" --scan-class-path
