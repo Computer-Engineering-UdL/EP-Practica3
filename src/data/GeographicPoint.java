@@ -42,7 +42,6 @@ final public class GeographicPoint {
 
     @Override
     public String toString() {
-        return "Geographic point {" + "latitude='" + latitude + '\'' +
-                "longitude='" + longitude + '}';
+        return "Geographic point: {latitude = " + latitude + " longitude = " + longitude + "}";
     }
 }

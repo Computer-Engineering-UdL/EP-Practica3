@@ -37,6 +37,6 @@ public final class UserAccount {
 
     @Override
     public String toString() {
-        return "UserAccount{" + "id='" + id + '\'' + '}';
+        return "UserAccount: {id = " + id + "}";
     }
 }

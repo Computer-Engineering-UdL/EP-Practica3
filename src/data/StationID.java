@@ -37,6 +37,6 @@ public final class StationID {
 
     @Override
     public String toString() {
-        return "StationID{" + "id='" + id + '\'' + '}';
+        return "StationID: {id = " + id + "}";
     }
 }
