@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - '**/*.java'
+  workflow_dispatch: 
 
 jobs:
   build-lint-test:
@@ -27,6 +28,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Download JUnit
+        run: |
+          curl -LJO https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.1/junit-platform-console-standalone-1.8.1.jar
+
       - name: Compile Java files
         run: |
           mkdir -p out/production out/test
@@ -40,5 +45,5 @@ jobs:
 
       - name: Run JUnit tests
         run: |
-          curl -LJO https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.1/junit-platform-console-standalone-1.8.1.jar
           java -jar junit-platform-console-standalone-1.8.1.jar --class-path "out/test:out/production" --scan-class-path
+      
