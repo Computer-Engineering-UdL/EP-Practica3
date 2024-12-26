@@ -1,20 +1,21 @@
 package micromobility;
 
 import data.GeographicPoint;
+import data.VehicleID;
 import micromobility.exceptions.ProceduralException;
 
 public class PMVehicle {
-    private final String vehicleId;
+    private final VehicleID vehicleId;
     private PMVState state;
     private GeographicPoint location;
 
-    public PMVehicle(String id, GeographicPoint initialLocation) {
+    public PMVehicle(VehicleID id, GeographicPoint initialLocation) {
         this.vehicleId = id;
         this.location = initialLocation;
         this.state = PMVState.Available;
     }
 
-    public String getVehicleId() {
+    public VehicleID getVehicleId() {
         return vehicleId;
     }
 
