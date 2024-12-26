@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - '**/*.java'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   build-lint-test:
@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir -p out/production out/test
           javac -d out/production $(find src -name "*.java")
-          javac -d out/test -cp out/production $(find test -name "*.java")
+          javac -d out/test -cp out/production:junit-platform-console-standalone-1.8.1.jar $(find test -name "*.java")
 
       - name: Run Checkstyle
         run: |
