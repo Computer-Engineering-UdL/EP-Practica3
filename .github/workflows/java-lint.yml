@@ -29,8 +29,9 @@ jobs:
 
       - name: Compile Java files
         run: |
-          mkdir -p out
-          javac -d out $(find src -name "*.java")
+          mkdir -p out/production out/test
+          javac -d out/production $(find src -name "*.java")
+          javac -d out/test -cp out/production $(find test -name "*.java")
 
       - name: Run Checkstyle
         run: |
