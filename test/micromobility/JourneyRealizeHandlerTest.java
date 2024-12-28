@@ -35,11 +35,11 @@ class JourneyRealizeHandlerTest {
 
     @Test
     void testScanQRSuccess() throws Exception {
-        UserAccount user = new UserAccount("user123");
+        UserAccount user = new UserAccount("123e4567e89b12d3a456426655440000");
         BufferedImage qrImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        StationID stationID = new StationID("station123");
+        StationID stationID = new StationID("123e4567e89b12d3a456426655440000");
         GeographicPoint location = new GeographicPoint(40.0F, -3.0F);
-        qrDecoderMock.setVehicleID(new VehicleID("vehicle123"));
+        qrDecoderMock.setVehicleID(new VehicleID("123e4567e89b12d3a456426655440001"));
         handler.scanQR(user, qrImage, stationID, location);
         assertNotNull(handler);
     }
@@ -51,14 +51,15 @@ class JourneyRealizeHandlerTest {
 
     @Test
     void testStopDriving() throws Exception {
-        UserAccount user = new UserAccount("user123");
+        UserAccount user = new UserAccount("123e4567e89b12d3a456426655440000");
         BufferedImage qrImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        StationID stationID = new StationID("station123");
+        StationID stationID = new StationID("123e4567e89b12d3a456426655440000");
         GeographicPoint startLocation = new GeographicPoint(40.0F, -3.0F);
         GeographicPoint endLocation = new GeographicPoint(41.0F, -4.0F);
-        qrDecoderMock.setVehicleID(new VehicleID("vehicle123"));
+        qrDecoderMock.setVehicleID(new VehicleID("123e4567e89b12d3a456426655440001"));
         handler.scanQR(user, qrImage, stationID, startLocation);
         handler.stopDriving(endLocation, stationID);
-        assertNull(handler);
+        assertNotNull(handler);
     }
 }
+

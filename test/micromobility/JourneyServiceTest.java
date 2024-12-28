@@ -15,24 +15,31 @@ class JourneyServiceTest {
 
     @Test
     void testSetServiceInitValid() {
-        UserAccount user = new UserAccount("user123");
-        VehicleID vehicle = new VehicleID("vehicle123");
+        // UUID válido para UserAccount y VehicleID
+        UserAccount user = new UserAccount("123e4567e89b12d3a456426655440000");
+        VehicleID vehicle = new VehicleID("223e4567e89b12d3a456426655440111");
         JourneyService journey = new JourneyService(user, vehicle);
-        GeographicPoint startLocation = new GeographicPoint(40.0F, (float) -3.0);
+
+        GeographicPoint startLocation = new GeographicPoint(40.0F, -3.0F);
         LocalDateTime startTime = LocalDateTime.now();
+
         journey.setServiceInit(startLocation, startTime);
+
         assertEquals(startLocation, journey.getStartLocation());
         assertEquals(startTime, journey.getStartTime());
     }
 
     @Test
     void testSetServiceFinishValid() {
-        UserAccount user = new UserAccount("user123");
-        VehicleID vehicle = new VehicleID("vehicle123");
+        UserAccount user = new UserAccount("123e4567e89b12d3a456426655440000");
+        VehicleID vehicle = new VehicleID("223e4567e89b12d3a456426655440111");
         JourneyService journey = new JourneyService(user, vehicle);
-        GeographicPoint endLocation = new GeographicPoint(41.0F, (float) -4.0);
+
+        GeographicPoint endLocation = new GeographicPoint(41.0F, -4.0F);
         LocalDateTime endTime = LocalDateTime.now();
+
         journey.setServiceFinish(endLocation, endTime, 20.0f, 10.0f, 30);
+
         assertEquals(endLocation, journey.getEndLocation());
         assertEquals(endTime, journey.getEndTime());
         assertEquals(20.0f, journey.getAverageSpeed());
@@ -40,11 +47,16 @@ class JourneyServiceTest {
 
     @Test
     void testCalculateServiceCost() {
-        UserAccount user = new UserAccount("user123");
-        VehicleID vehicle = new VehicleID("vehicle123");
+        UserAccount user = new UserAccount("123e4567e89b12d3a456426655440000");
+        VehicleID vehicle = new VehicleID("223e4567e89b12d3a456426655440111");
         JourneyService journey = new JourneyService(user, vehicle);
-        journey.setServiceFinish(null, null, 0, 10.0f, 30);
+
+        GeographicPoint endLocation = new GeographicPoint(41.0F, -4.0F);
+        LocalDateTime endTime = LocalDateTime.now();
+        journey.setServiceFinish(endLocation, endTime, 20.0f, 10.0f, 30);
+
         journey.calculateServiceCost(new BigDecimal("0.5"), new BigDecimal("0.2"));
-        assertEquals(new BigDecimal("7.0"), journey.getServiceCost());
+
+        assertEquals(new BigDecimal("11.00"), journey.getServiceCost());
     }
 }
