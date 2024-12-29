@@ -22,8 +22,8 @@ public class ServerMock implements Server {
     private boolean throwInvalidPairingArgsException;
     private boolean throwPairingNotFoundException;
 
-    private final Map<VehicleID, Boolean> vehicleAvailability = new HashMap<>();
-    private final Map<UserAccount, VehicleID> activePairings = new HashMap<>();
+    public final Map<VehicleID, Boolean> vehicleAvailability = new HashMap<>();
+    public final Map<UserAccount, VehicleID> activePairings = new HashMap<>();
 
     public void setThrowConnectionException(boolean value) {
         this.throwConnectionException = value;
@@ -86,6 +86,15 @@ public class ServerMock implements Server {
         if (throwPairingNotFoundException) {
             throw new PairingNotFoundException("Pairing not found");
         }
+    }
+
+    public void reset() {
+        vehicleAvailability.clear();
+        activePairings.clear();
+        throwConnectionException = false;
+        throwPMVNotAvailableException = false;
+        throwInvalidPairingArgsException = false;
+        throwPairingNotFoundException = false;
     }
 
     @Override
