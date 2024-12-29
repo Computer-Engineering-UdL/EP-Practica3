@@ -18,18 +18,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JourneyRealizeHandlerTest {
 
-    private ServerMock serverMock;
     private QRDecoderMock qrDecoderMock;
-    private UnbondedBTSignalMock btSignalMock;
-    private ArduinoMicroControllerMock arduinoMock;
     private JourneyRealizeHandler handler;
 
     @BeforeEach
     void setup() {
-        serverMock = new ServerMock();
+        ServerMock serverMock = new ServerMock();
         qrDecoderMock = new QRDecoderMock();
-        btSignalMock = new UnbondedBTSignalMock();
-        arduinoMock = new ArduinoMicroControllerMock();
+        UnbondedBTSignalMock btSignalMock = new UnbondedBTSignalMock();
+        ArduinoMicroControllerMock arduinoMock = new ArduinoMicroControllerMock();
         handler = new JourneyRealizeHandler(serverMock, qrDecoderMock, btSignalMock, arduinoMock);
     }
 
