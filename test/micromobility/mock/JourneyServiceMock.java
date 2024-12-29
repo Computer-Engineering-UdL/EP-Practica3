@@ -15,11 +15,6 @@ public class JourneyServiceMock extends JourneyService {
 
     private GeographicPoint mockStartLocation;
     private LocalDateTime mockStartTime;
-    private GeographicPoint mockEndLocation;
-    private LocalDateTime mockEndTime;
-    private float mockAverageSpeed;
-    private float mockDistance;
-    private int mockDuration;
     private BigDecimal mockServiceCost;
 
     public JourneyServiceMock(UserAccount user, VehicleID vehicle) {
@@ -37,12 +32,6 @@ public class JourneyServiceMock extends JourneyService {
     @Override
     public void setServiceFinish(GeographicPoint endLocation, LocalDateTime endTime, float averageSpeed, float distance, int duration) {
         setServiceFinishCalled = true;
-        this.mockEndLocation = endLocation;
-        this.mockEndTime = endTime;
-        this.mockAverageSpeed = averageSpeed;
-        this.mockDistance = distance;
-        this.mockDuration = duration;
-        super.setServiceFinish(endLocation, endTime, averageSpeed, distance, duration); // Crida a la superclasse
     }
 
     @Override
@@ -50,10 +39,8 @@ public class JourneyServiceMock extends JourneyService {
         calculateServiceCostCalled = true;
         // Simular un cost fix per a la prova
         this.mockServiceCost = new BigDecimal("10.00");
-        super.calculateServiceCost(ratePerKm, ratePerMinute); // Opcional, depèn de la lògica
     }
 
-    // Mètodes per verificar si els mètodes han estat cridats
     public boolean isSetServiceInitCalled() {
         return setServiceInitCalled;
     }
@@ -66,7 +53,6 @@ public class JourneyServiceMock extends JourneyService {
         return calculateServiceCostCalled;
     }
 
-    // Mètodes per obtenir els valors simulats
     public GeographicPoint getMockStartLocation() {
         return mockStartLocation;
     }
@@ -75,6 +61,8 @@ public class JourneyServiceMock extends JourneyService {
         return mockStartTime;
     }
 
+    //PLANNED TO USE BUT FINALLY DID NOT
+/*
     public GeographicPoint getMockEndLocation() {
         return mockEndLocation;
     }
@@ -94,7 +82,7 @@ public class JourneyServiceMock extends JourneyService {
     public int getMockDuration() {
         return mockDuration;
     }
-
+*/
     public BigDecimal getMockServiceCost() {
         return mockServiceCost;
     }
