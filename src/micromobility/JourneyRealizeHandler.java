@@ -26,18 +26,24 @@ public class JourneyRealizeHandler {
     private final QRDecoder qrDecoder;
     private final UnbondedBTSignal btSignal;
     private final ArduinoMicroController arduinoController;
-
-    private JourneyService currentJourney;
-
-    // TODO: Maybe set this as variable
+    private final JourneyServiceFactory journeyServiceFactory;
     private static final BigDecimal RATE_PER_KM = new BigDecimal("0.5");
     private static final BigDecimal RATE_PER_MINUTE = new BigDecimal("0.2");
 
-    public JourneyRealizeHandler(Server server, QRDecoder qrDecoder, UnbondedBTSignal btSignal, ArduinoMicroController arduinoController) {
+    private JourneyService currentJourney;
+
+    public JourneyRealizeHandler(Server server, QRDecoder qrDecoder, UnbondedBTSignal btSignal,
+                                 ArduinoMicroController arduinoController, JourneyServiceFactory factory) {
         this.server = server;
         this.qrDecoder = qrDecoder;
         this.btSignal = btSignal;
         this.arduinoController = arduinoController;
+        this.journeyServiceFactory = factory;
+    }
+
+    public JourneyRealizeHandler(Server server, QRDecoder qrDecoder, UnbondedBTSignal btSignal,
+                                 ArduinoMicroController arduinoController) {
+        this(server, qrDecoder, btSignal, arduinoController, new DefaultJourneyServiceFactory());
     }
 
     public void scanQR(UserAccount user, BufferedImage qrImage, StationID stationID, GeographicPoint location)
@@ -48,7 +54,7 @@ public class JourneyRealizeHandler {
         VehicleID vehicleID = qrDecoder.getVehicleID(qrImage);
         server.checkPMVAvail(vehicleID);
         server.registerPairing(user, vehicleID, stationID, location, LocalDateTime.now());
-        currentJourney = new JourneyService(user, vehicleID);
+        currentJourney = journeyServiceFactory.createJourneyService(user, vehicleID); // Utilitzar la fàbrica
         currentJourney.setServiceInit(location, LocalDateTime.now());
         server.setPairing(user, vehicleID, stationID, location, LocalDateTime.now());
     }
@@ -102,5 +108,9 @@ public class JourneyRealizeHandler {
 
     private float calculateDistance(GeographicPoint start, GeographicPoint end) {
         return (float) Point2D.distance(start.getLatitude(), start.getLongitude(), end.getLatitude(), end.getLongitude());
+    }
+
+    public JourneyService getCurrentJourney() {
+        return currentJourney;
     }
 }
