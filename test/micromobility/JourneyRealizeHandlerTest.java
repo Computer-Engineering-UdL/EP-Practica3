@@ -1,5 +1,7 @@
 package micromobility;
 
+import micromobility.mock.JourneyServiceFactoryMock;
+import micromobility.mock.JourneyServiceMock;
 import data.GeographicPoint;
 import data.StationID;
 import data.UserAccount;
@@ -13,21 +15,25 @@ import services.mock.ServerMock;
 import services.mock.UnbondedBTSignalMock;
 
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JourneyRealizeHandlerTest {
 
     private QRDecoderMock qrDecoderMock;
+    private ServerMock serverMock;
     private JourneyRealizeHandler handler;
+    private JourneyServiceFactoryMock journeyServiceFactoryMock;
 
     @BeforeEach
     void setup() {
-        ServerMock serverMock = new ServerMock();
+        serverMock = new ServerMock();
         qrDecoderMock = new QRDecoderMock();
         UnbondedBTSignalMock btSignalMock = new UnbondedBTSignalMock();
         ArduinoMicroControllerMock arduinoMock = new ArduinoMicroControllerMock();
-        handler = new JourneyRealizeHandler(serverMock, qrDecoderMock, btSignalMock, arduinoMock);
+        journeyServiceFactoryMock = new JourneyServiceFactoryMock();
+        handler = new JourneyRealizeHandler(serverMock, qrDecoderMock, btSignalMock, arduinoMock, journeyServiceFactoryMock);
     }
 
     @Test
@@ -36,9 +42,20 @@ class JourneyRealizeHandlerTest {
         BufferedImage qrImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         StationID stationID = new StationID("123e4567e89b12d3a456426655440000");
         GeographicPoint location = new GeographicPoint(40.0F, -3.0F);
-        qrDecoderMock.setVehicleID(new VehicleID("123e4567e89b12d3a456426655440001"));
+        VehicleID expectedVehicleID = new VehicleID("123e4567e89b12d3a456426655440001");
+        qrDecoderMock.setVehicleID(expectedVehicleID);
+
+        JourneyServiceMock journeyMock = new JourneyServiceMock(user, expectedVehicleID);
+        journeyServiceFactoryMock.setJourneyServiceMock(journeyMock);
+
         handler.scanQR(user, qrImage, stationID, location);
-        assertNotNull(handler);
+
+        // Assercions millorades
+        assertNotNull(handler.getCurrentJourney(), "CurrentJourney hauria de ser inicialitzada");
+        assertTrue(journeyServiceFactoryMock.isCreateJourneyServiceCalled(), "La fàbrica hauria de ser cridada");
+        assertEquals(journeyMock, handler.getCurrentJourney(), "CurrentJourney hauria de ser el mock proporcionat");
+        assertTrue(journeyMock.isSetServiceInitCalled(), "setServiceInit hauria de ser cridat");
+        assertEquals(location, journeyMock.getMockStartLocation(), "La ubicació inicial hauria de coincidir");
     }
 
     @Test
@@ -53,10 +70,20 @@ class JourneyRealizeHandlerTest {
         StationID stationID = new StationID("123e4567e89b12d3a456426655440000");
         GeographicPoint startLocation = new GeographicPoint(40.0F, -3.0F);
         GeographicPoint endLocation = new GeographicPoint(41.0F, -4.0F);
-        qrDecoderMock.setVehicleID(new VehicleID("123e4567e89b12d3a456426655440001"));
+        VehicleID vehicleID = new VehicleID("123e4567e89b12d3a456426655440001");
+        qrDecoderMock.setVehicleID(vehicleID);
+        serverMock.registerLocation(vehicleID, stationID);
+
+        JourneyServiceMock journeyMock = new JourneyServiceMock(user, vehicleID);
+        journeyServiceFactoryMock.setJourneyServiceMock(journeyMock);
+
         handler.scanQR(user, qrImage, stationID, startLocation);
         handler.stopDriving(endLocation, stationID);
-        assertNotNull(handler);
+
+        // Assercions millorades
+        assertNull(handler.getCurrentJourney(), "CurrentJourney hauria de ser nul després de finalitzar la jornada");
+        assertTrue(journeyMock.isSetServiceFinishCalled(), "setServiceFinish hauria de ser cridat");
+        assertTrue(journeyMock.isCalculateServiceCostCalled(), "calculateServiceCost hauria de ser cridat");
+        assertEquals(new BigDecimal("10.00"), journeyMock.getMockServiceCost(), "El cost del servei hauria de coincidir amb el valor simul·lat");
     }
 }
-
